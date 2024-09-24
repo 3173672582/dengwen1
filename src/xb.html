@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>采购数据表</title>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .edit {
+            background-color: #ffc107;
+        }
+        .delete {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>汇总</h1>
+    <button class="button" onclick="addRow()">添加行</button>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>小B</th>
+                <th>平台业务</th>
+                <th>批发</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- 初始行将由 JavaScript 填充 -->
+        </tbody>
+    </table>
+
+    <!-- jQuery 和 DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable(); // 初始化 DataTables
+            fillCurrentMonthDates(); // 填充当前月份的日期
+        });
+
+        function fillCurrentMonthDates() {
+            const tbody = document.getElementById("table-body");
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = date.getMonth(); // 0 = January, 11 = December
+            const lastDay = new Date(year, month + 1, 0).getDate();
+
+            for (let day = 1; day <= lastDay; day++) {
+                const row = tbody.insertRow();
+                row.insertCell(0).innerText = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                const salesCell = row.insertCell(1);
+                salesCell.contentEditable = "true";
+                salesCell.innerText = '0';
+
+                const dailySalesCell = row.insertCell(2);
+                dailySalesCell.contentEditable = "true";
+                dailySalesCell.innerText = '0';
+
+                const averageSalesCell = row.insertCell(3);
+                averageSalesCell.innerText = '0';
+
+                const actionCell = row.insertCell(4);
+                actionCell.innerHTML = `<button class="edit" onclick="saveRow(this)">保存</button> <button class="delete" onclick="deleteRow(this)">删除</button>`;
+            }
+        }
+
+        function addRow() {
+            const tbody = document.getElementById("table-body");
+            const newRow = tbody.insertRow();
+            for (let i = 0; i < 4; i++) {
+                const newCell = newRow.insertCell(i);
+                newCell.contentEditable = "true";
+                newCell.innerText = (i === 1) ? '0' : '0'; // 默认值为 0
+            }
+            const actionCell = newRow.insertCell(4);
+            actionCell.innerHTML = `<button class="edit" onclick="saveRow(this)">保存</button> <button class="delete" onclick="deleteRow(this)">删除</button>`;
+            $('#data-table').DataTable().row.add(newRow).draw(); // 更新 DataTable
+        }
+
+        function saveRow(button) {
+            const row = button.parentNode.parentNode;
+            for (let i = 0; i < row.cells.length - 1; i++) {
+                row.cells[i].contentEditable = "false"; // 设置为只读
+            }
+            button.innerText = "已保存";
+            button.setAttribute("disabled", "true");
+
+            // 计算日均销售额
+            const dailySales = parseFloat(row.cells[2].innerText) || 0;
+            const monthSales = parseFloat(row.cells[1].innerText) || 0;
+            const date = new Date(row.cells[0].innerText);
+            const dayOfMonth = date.getDate(); // 获取当前行对应的日期的日
+
+            const averageSales = monthSales / dayOfMonth; // 使用当前日期的日数计算日均销售额
+
+            row.cells[3].innerText = averageSales.toFixed(2); // 保留两位小数
+        }
+
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            $('#data-table').DataTable().row($(row)).remove().draw(); // 更新 DataTable
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 minmum-scale=0.9 maxmun-scale=0.5">
+    <title>Document</title>
+    <!-- Include ECharts library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
+    <!-- Include Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <link rel="stylesheet" href="../src/css/home.css">
+</head>
+<body>
+    <div id="app">
+        <div class="header">项目进度管理</div>
+        <div class="container">
+            <div class="left">
+                <!-- <div class="left-top">小B端</div> -->
+                <div class="left-top-container">
+                    <div class="left-top-left">
+                        <div class="chart-container half-height" ref="firstMain1"></div>
+                        <div class="chart-container half-height" ref="firstMain2"></div>
+                    </div>
+                    <div class="left-top-right">
+                        <div class="chart-container full-height" ref="firstMain3"></div>
+                    </div>
+                </div>
+                <div class="left-bottom-container">
+                    <div class="left-bottom-left">
+                        <div class="chart-container half-height" ref="secondMain1"></div>
+                    </div>
+                    <div class="left-bottom-right">
+                        <div class="chart-container half-height" ref="secondMain2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="center">
+                <div class="center-top" ref="threeMain1"></div>
+                <div class="center-bottom">
+                    <div class="sidebar">
+                        <a href="#" onclick="showContent('home')">小B数据图表</a>
+                        <!-- <a href="#" onclick="showContent('product-forecast')">产品预测</a>
+                        <a href="#" onclick="showContent('package-forecast')">包规预测</a> -->
+                        <a href="#" onclick="showContent('data-table')">数据输入</a>
+                    </div>        
+                </div>
+            </div>
+            <div class="right">
+                <div class="right-top">
+                    <div class="chart-container half-height" ref="fourMain1"></div>
+                    <div class="chart-container half-height" ref="fourMain2"></div>
+                </div>
+                <div class="right-bottom" ref="fourMain3"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+        el: '#app',
+        mounted() {
+            this.drawLeftTop1();
+            this.drawLeftTop2();
+            this.drawLeftTop3();
+            this.drawLeftBottom1();
+            this.drawLeftBottom2();
+            this.drawcenterTop();
+            this.drawRightTop1();
+            this.drawRightTop2();
+            this.drawRightBottom();
+        },
+        methods: {
+            handleResize() {
+        const chartRefs = [
+            this.$refs.firstMain1,
+            this.$refs.firstMain2,
+            this.$refs.firstMain3,
+            this.$refs.secondMain1,
+            this.$refs.secondMain2,
+            this.$refs.threeMain1,
+            this.$refs.fourMain1,
+            this.$refs.fourMain2,
+            this.$refs.fourMain3,
+            // Add other chart refs here
+        ];
+        chartRefs.forEach(ref => {
+            const chartInstance = echarts.getInstanceByDom(ref);
+            if (chartInstance) {
+                chartInstance.resize();
+            }
+        });
+    },
+            drawLeftTop1() {
+                var myCharts = echarts.init(this.$refs.firstMain1);
+                var option = {
+                    title: { text: '门店摸底总数', textStyle: { color: 'black' } },
+                    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                    grid: { containLabel: true, left: '10px', top: '10px', height: '90px' },
+                    yAxis: {
+                        data: ['完成进度'],
+                        inverse: true,
+                        axisLine: { show: false },
+                        axisTick: { show: false },
+                        axisLabel: { margin: 15, fontSize: 15, color: 'black' }
+                    },
+                    xAxis: {
+                        type: 'value',
+                        splitLine: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: { show: false }
+                    },
+                    series: [{
+                        name: '门店摸底总数',
+                        type: 'bar',
+                        barWidth: '10%',
+                        barBorderRadius: '50%',
+                        label: { show: true, position: 'insideRight' },
+                        data: [8761]
+                    }]
+                };
+                myCharts.setOption(option);
+            },
+            drawLeftTop2() {
+                var myCharts = echarts.init(this.$refs.firstMain2);
+                var option = {
+                    title: { text: '销售人员到位人数', textStyle: { color: 'black' } },
+                    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                    grid: { containLabel: true, left: '10px', top: '10px', height: '90px' },
+                    yAxis: {
+                        data: ['完成进度'],
+                        inverse: true,
+                        axisLine: { show: false },
+                        axisTick: { show: false },
+                        axisLabel: { margin: 15, fontSize: 15, color: 'black' }
+                    },
+                    xAxis: {
+                        type: 'value',
+                        splitLine: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: { show: false }
+                    },
+                    series: [{
+                        name: '销售人员到位人数',
+                        type: 'bar',
+                        barWidth: '10%',
+                        barBorderRadius: '50%',
+                        label: { show: true, position: 'insideRight' },
+                        data: [17]
+                    }]
+                };
+                myCharts.setOption(option);
+            },
+            drawLeftTop3() {
+                var myCharts = echarts.init(this.$refs.firstMain3);
+                var option = {
+                    title: { text: '各区域销量', textStyle: { color: 'black' } },
+                    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                    legend: {top:'10%'},
+                    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01],
+                        axisLabel: { color: 'black' }
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['贵阳', '六盘水', '安顺', '铜仁', '遵义'],
+                        axisLabel: { color: 'black', fontSize: 16 }
+                    },
+                    series: [
+                        {
+                            name: '月销量',
+                            type: 'bar',
+                            data: [18203, 23489, 29034, 104970, 131744],
+                            label: { show: true, position: 'right', color: 'black', fontSize: 12 }
+                        },
+                        {
+                            name: '当日销量',
+                            type: 'bar',
+                            data: [19325, 23438, 31000, 121594, 134141],
+                            label: { show: true, position: 'right', color: 'black', fontSize: 12 }
+                        },
+                        {
+                            name: '日均销量',
+                            type: 'bar',
+                            data: [19325, 23438, 31000, 121594, 134141],
+                            label: { show: true, position: 'right', color: 'black', fontSize: 12 }
+                        }
+                    ]
+                };
+                myCharts.setOption(option);
+            },
+            drawLeftBottom1() {
+                var myChart = echarts.init(this.$refs.secondMain1);
+                var option = {
+                    title: { text: '区域客户图', textStyle: { color: 'black' } },
+                    tooltip: { trigger: 'axis' },
+                    legend: { data: ['订单', '复购客户'], top: '10%' },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataView: { show: true, readOnly: false },
+                            magicType: { show: true, type: ['line'] },
+                            restore: { show: true },
+                            saveAsImage: { show: true }
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [{ type: 'category', data: ['贵阳', '六盘水', '安顺', '铜仁', '遵义'], axisLabel: { color: 'black' } }],
+                    yAxis: [{ type: 'value', axisLabel: { color: 'black' } }],
+                    series: [
+                        {
+                            name: '订单',
+                            type: 'bar',
+                            data: [2.0, 4.9, 7.0, 23.2, 25.6],
+                            label: { show: true, position: 'top', color: 'black', fontSize: 12 }
+                        },
+                        {
+                            name: '复购客户',
+                            type: 'bar',
+                            data: [2.6, 5.9, 9.0, 26.4, 28.7],
+                            label: { show: true, position: 'top', color: 'black', fontSize: 12 }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            },
+            drawLeftBottom2() {
+                var mycharts = echarts.init(this.$refs.secondMain2);
+                var option = {
+                    title: { text: '销量前五', textStyle: { color: 'black' } },
+                    tooltip: { trigger: 'item', formatter: '{a} <br/>{b} : {c}' },
+                    toolbox: {
+                        feature: {
+                            dataView: { readOnly: false },
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    legend: { data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order'], top: '10%' },
+                    series: [{
+                        name: '销量前五',
+                        type: 'funnel',
+                        left: '10%',
+                        top: 80,
+                        bottom: 40,
+                        width: '80%',
+                        min: 0,
+                        max: 100,
+                        minSize: '0%',
+                        maxSize: '100%',
+                        sort: 'descending',
+                        gap: 2,
+                        label: {
+                            show: true,
+                            position: 'inside',
+                            formatter: function (params) {
+                                // var percent = (params.value / 100) * 100;
+                                return params.name + ' ' + params.value;
+                            }
+                        },
+                        labelLine: { length: 10, lineStyle: { width: 1, type: 'solid' } },
+                        itemStyle: { borderColor: '#fff', borderWidth: 1 },
+                        emphasis: { label: { fontSize: 20 } },
+                        data: [
+                            { value: 60, name: 'Visit' },
+                            { value: 40, name: 'Inquiry' },
+                            { value: 20, name: 'Order' },
+                            { value: 80, name: 'Click' },
+                            { value: 100, name: 'Show' }
+                        ]
+                    }]
+                };
+                mycharts.setOption(option);
+            },
+            drawcenterTop() {
+                var mycharts = echarts.init(this.$refs.threeMain1);
+                var now = new Date(); 
+                var firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1); // 本月第一天 
+                var displayMonth = now.getDate() === 1 ? (now.getMonth() - 1 + 12) % 12 + 1 : now.getMonth() + 1;  
+                var formattedMonth = displayMonth < 10 ? '' + displayMonth : displayMonth.toString();  
+                const gaugeData = [  
+                    {  
+                        value: 719539.11, // 数据小B  
+                        name: '小B',  
+                        title: {  
+                        offsetCenter: ['0%', '-50%']  
+                        },  
+                        detail: {  
+                        valueAnimation: true,  
+                        offsetCenter: ['0%', '-30%']  
+                        }  
+                    },  
+                    {  
+                        value: 2193830.68, // 平台业务数据
+                        name: '平台业务',  
+                        title: {  
+                        offsetCenter: ['0%', '-5%']  
+                        },  
+                        detail: {  
+                        valueAnimation: true,  
+                        offsetCenter: ['0%', '10%']  
+                        }  
+                    },  
+                    {  
+                        value: 0, // 批发数据
+                        name: '批发',  
+                        title: {  
+                        offsetCenter: ['0%', '30%']  
+                        },  
+                        detail: {  
+                        valueAnimation: true,  
+                        offsetCenter: ['0%', '50%']  
+                        }  
+                    }  
+                ];  
+                
+                var option = {  
+                    title: {  
+                        text: formattedMonth + '月总销售额', // 添加'月'以符合中文习惯  
+                        textStyle: { color: 'black' }  
+                    },  
+                    series: [  
+                        {  
+                            type: 'gauge',  
+                            startAngle: 90,  
+                            endAngle: -270,  
+                            pointer: {  
+                                show: false  
+                            },  
+                            progress: {  
+                                show: true,  
+                                overlap: false,  
+                                roundCap: true,  
+                                clip: false,  
+                                itemStyle: {  
+                                borderWidth: 1,  
+                                borderColor: '#EAEBEE'  
+                                },  
+                            },  
+                            axisLine: {  
+                                lineStyle: {  
+                                width: 40  
+                                }  
+                            },  
+                            splitLine: {  
+                                show: false,  
+                                distance: 0,  
+                                length: 10  
+                            },  
+                            axisTick: {  
+                                show: false  
+                            },  
+                            axisLabel: {  
+                                show: false,  
+                                distance: 50  
+                            },  
+                            data: gaugeData,  
+                            title: {  
+                                fontSize: 14  
+                            },  
+                            detail: {  
+                                width: 100,  
+                                height: 14,  
+                                fontSize: 14,  
+                                color: 'inherit',  
+                                borderColor: 'inherit',  
+                                borderRadius: 20,  
+                                borderWidth: 1,  
+                                formatter: '{value}'  
+                            }  
+                        }  
+                    ]  
+                };
+                mycharts.setOption(option);
+            },
+            drawRightTop1() {
+                var myChart = echarts.init(this.$refs.fourMain1); // Access ECharts without Vue instance wrapper
+                const pathSymbols = {  
+                    reindeer:
+                    'path://M-22.788,24.521c2.08-0.986,3.611-3.905,4.984-5.892 c-2.686,2.782-5.047,5.884-9.102,7.312c-0.992,0.005-0.25-2.016,0.34-2.362l1.852-0.41c0.564-0.218,0.785-0.842,0.902-1.347 c2.133-0.727,4.91-4.129,6.031-6.194c1.748-0.7,4.443-0.679,5.734-2.293c1.176-1.468,0.393-3.992,1.215-6.557 c0.24-0.754,0.574-1.581,1.008-2.293c-0.611,0.011-1.348-0.061-1.959-0.608c-1.391-1.245-0.785-2.086-1.297-3.313 c1.684,0.744,2.5,2.584,4.426,2.586C-8.46,3.012-8.255,2.901-8.04,2.824c6.031-1.952,15.182-0.165,19.498-3.937 c1.15-3.933-1.24-9.846-1.229-9.938c0.008-0.062-1.314-0.004-1.803-0.258c-1.119-0.771-6.531-3.75-0.17-3.33 c0.314-0.045,0.943,0.259,1.439,0.435c-0.289-1.694-0.92-0.144-3.311-1.946c0,0-1.1-0.855-1.764-1.98 c-0.836-1.09-2.01-2.825-2.992-4.031c-1.523-2.476,1.367,0.709,1.816,1.108c1.768,1.704,1.844,3.281,3.232,3.983 c0.195,0.203,1.453,0.164,0.926-0.468c-0.525-0.632-1.367-1.278-1.775-2.341c-0.293-0.703-1.311-2.326-1.566-2.711 c-0.256-0.384-0.959-1.718-1.67-2.351c-1.047-1.187-0.268-0.902,0.521-0.07c0.789,0.834,1.537,1.821,1.672,2.023 c0.135,0.203,1.584,2.521,1.725,2.387c0.102-0.259-0.035-0.428-0.158-0.852c-0.125-0.423-0.912-2.032-0.961-2.083 c-0.357-0.852-0.566-1.908-0.598-3.333c0.4-2.375,0.648-2.486,0.549-0.705c0.014,1.143,0.031,2.215,0.602,3.247 c0.807,1.496,1.764,4.064,1.836,4.474c0.561,3.176,2.904,1.749,2.281-0.126c-0.068-0.446-0.109-2.014-0.287-2.862 c-0.18-0.849-0.219-1.688-0.113-3.056c0.066-1.389,0.232-2.055,0.277-2.299c0.285-1.023,0.4-1.088,0.408,0.135 c-0.059,0.399-0.131,1.687-0.125,2.655c0.064,0.642-0.043,1.768,0.172,2.486c0.654,1.928-0.027,3.496,1,3.514 c1.805-0.424,2.428-1.218,2.428-2.346c-0.086-0.704-0.121-0.843-0.031-1.193c0.221-0.568,0.359-0.67,0.312-0.076 c-0.055,0.287,0.031,0.533,0.082,0.794c0.264,1.197,0.912,0.114,1.283-0.782c0.15-0.238,0.539-2.154,0.545-2.522 c-0.023-0.617,0.285-0.645,0.309,0.01c0.064,0.422-0.248,2.646-0.205,2.334c-0.338,1.24-1.105,3.402-3.379,4.712 c-0.389,0.12-1.186,1.286-3.328,2.178c0,0,1.729,0.321,3.156,0.246c1.102-0.19,3.707-0.027,4.654,0.269 c1.752,0.494,1.531-0.053,4.084,0.164c2.26-0.4,2.154,2.391-1.496,3.68c-2.549,1.405-3.107,1.475-2.293,2.984 c3.484,7.906,2.865,13.183,2.193,16.466c2.41,0.271,5.732-0.62,7.301,0.725c0.506,0.333,0.648,1.866-0.457,2.86 c-4.105,2.745-9.283,7.022-13.904,7.662c-0.977-0.194,0.156-2.025,0.803-2.247l1.898-0.03c0.596-0.101,0.936-0.669,1.152-1.139 c3.16-0.404,5.045-3.775,8.246-4.818c-4.035-0.718-9.588,3.981-12.162,1.051c-5.043,1.423-11.449,1.84-15.895,1.111 c-3.105,2.687-7.934,4.021-12.115,5.866c-3.271,3.511-5.188,8.086-9.967,10.414c-0.986,0.119-0.48-1.974,0.066-2.385l1.795-0.618 C-22.995,25.682-22.849,25.035-22.788,24.521z',
+                };  
+                const labelSetting = {  
+                    show: true,
+                    position: 'right',
+                    offset: [-10, 20],
+                    fontSize: 12 
+                };  
+
+                function makeOption(type, symbol) {  
+                    return {
+                        title: {
+                            text: '采购',
+                            left: '20px',
+                            textStyle: {
+                                color: 'black'
+                            }
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        grid: {
+                            containLabel: true,
+                            left: 20,
+                            top: 40,
+                            bottom:30
+                        },
+                        yAxis: {
+                            data: ['月销售额', '日销售额', '日均销售额'],
+                            inverse: true,
+                            axisLine: { show: false },
+                            axisTick: { show: false },
+                            axisLabel: {
+                                margin: 30,
+                                fontSize: 14,
+                                color: 'black',
+
+                            },
+                            axisPointer: {
+                                label: {
+                                    show: true,
+                                    margin: 30
+                                }
+                            }
+                        },
+                        xAxis: {
+                            splitLine: { show: false },
+                            axisLabel: { show: false },
+                            axisTick: { show: false },
+                            axisLine: { show: false }
+                        },
+                        animationDurationUpdate: 500,
+                        series: [
+                            {
+                                id: 'bar1',
+                                type: type,
+                                label: labelSetting,
+                                symbolRepeat: true,
+                                symbolSize: ['150%', '100%'],
+                                barCategoryGap: '20%',
+                                universalTransition: {
+                                    enabled: true,
+                                    delay: function (idx, total) {
+                                        return (idx / total) * 1000;
+                                    }
+                                },
+                                data: [
+                                    {
+                                        value: 3569476.75,
+                                        symbol: symbol || pathSymbols.reindeer,
+                                        label: {
+                                            position: 'right',
+                                            offset: [-25, 0],
+                                            formatter: function (params) {  
+                                                if (params.value === 0) {  
+                                                    return '';  
+                                                }  
+                                                return params.value;  
+                                            }  
+                                        }
+                                    },
+                                    {
+                                        value: 199316.5,
+                                        symbol: symbol || pathSymbols.reindeer,
+                                        label: {
+                                            position: 'right',
+                                            offset: [10, 0],
+                                            formatter: function (params) {  
+                                                if (params.value === 0) {  
+                                                    return '';  
+                                                }  
+                                                return params.value;  
+                                            }  
+                                        }
+                                    },
+                                    {
+                                        value: 9316.5,
+                                        symbol: symbol || pathSymbols.reindeer,
+                                        label: {
+                                            position: 'right',
+                                            offset: [10, 0],
+                                            formatter: function (params) {  
+                                                if (params.value === 0) {  
+                                                    return '';  
+                                                }  
+                                                return params.value;  
+                                            }  
+                                        }
+                                    },
+                                ]
+                            },
+                        ]
+                    };
+                }  
+                
+                const options = [  
+                    makeOption('pictorialBar'),  
+                    makeOption('bar'),  
+                    makeOption('pictorialBar', 'diamond')  
+                ];  
+                
+                var optionIndex = 0;  
+                
+                var option = options[optionIndex];  
+                myChart.setOption(option);  
+                
+                setInterval(function () {  
+                    optionIndex = (optionIndex + 1) % options.length;  
+                    myChart.setOption(options[optionIndex]);  
+                }, 2500);  
+                option && myChart.setOption(option);
+            },
+            drawRightTop2() {
+                var myChart = echarts.init(this.$refs.fourMain2); // Access ECharts without Vue instance wrapper
+                const pathSymbols = {  
+                    reindeer:
+                    'path://M-22.788,24.521c2.08-0.986,3.611-3.905,4.984-5.892 c-2.686,2.782-5.047,5.884-9.102,7.312c-0.992,0.005-0.25-2.016,0.34-2.362l1.852-0.41c0.564-0.218,0.785-0.842,0.902-1.347 c2.133-0.727,4.91-4.129,6.031-6.194c1.748-0.7,4.443-0.679,5.734-2.293c1.176-1.468,0.393-3.992,1.215-6.557 c0.24-0.754,0.574-1.581,1.008-2.293c-0.611,0.011-1.348-0.061-1.959-0.608c-1.391-1.245-0.785-2.086-1.297-3.313 c1.684,0.744,2.5,2.584,4.426,2.586C-8.46,3.012-8.255,2.901-8.04,2.824c6.031-1.952,15.182-0.165,19.498-3.937 c1.15-3.933-1.24-9.846-1.229-9.938c0.008-0.062-1.314-0.004-1.803-0.258c-1.119-0.771-6.531-3.75-0.17-3.33 c0.314-0.045,0.943,0.259,1.439,0.435c-0.289-1.694-0.92-0.144-3.311-1.946c0,0-1.1-0.855-1.764-1.98 c-0.836-1.09-2.01-2.825-2.992-4.031c-1.523-2.476,1.367,0.709,1.816,1.108c1.768,1.704,1.844,3.281,3.232,3.983 c0.195,0.203,1.453,0.164,0.926-0.468c-0.525-0.632-1.367-1.278-1.775-2.341c-0.293-0.703-1.311-2.326-1.566-2.711 c-0.256-0.384-0.959-1.718-1.67-2.351c-1.047-1.187-0.268-0.902,0.521-0.07c0.789,0.834,1.537,1.821,1.672,2.023 c0.135,0.203,1.584,2.521,1.725,2.387c0.102-0.259-0.035-0.428-0.158-0.852c-0.125-0.423-0.912-2.032-0.961-2.083 c-0.357-0.852-0.566-1.908-0.598-3.333c0.4-2.375,0.648-2.486,0.549-0.705c0.014,1.143,0.031,2.215,0.602,3.247 c0.807,1.496,1.764,4.064,1.836,4.474c0.561,3.176,2.904,1.749,2.281-0.126c-0.068-0.446-0.109-2.014-0.287-2.862 c-0.18-0.849-0.219-1.688-0.113-3.056c0.066-1.389,0.232-2.055,0.277-2.299c0.285-1.023,0.4-1.088,0.408,0.135 c-0.059,0.399-0.131,1.687-0.125,2.655c0.064,0.642-0.043,1.768,0.172,2.486c0.654,1.928-0.027,3.496,1,3.514 c1.805-0.424,2.428-1.218,2.428-2.346c-0.086-0.704-0.121-0.843-0.031-1.193c0.221-0.568,0.359-0.67,0.312-0.076 c-0.055,0.287,0.031,0.533,0.082,0.794c0.264,1.197,0.912,0.114,1.283-0.782c0.15-0.238,0.539-2.154,0.545-2.522 c-0.023-0.617,0.285-0.645,0.309,0.01c0.064,0.422-0.248,2.646-0.205,2.334c-0.338,1.24-1.105,3.402-3.379,4.712 c-0.389,0.12-1.186,1.286-3.328,2.178c0,0,1.729,0.321,3.156,0.246c1.102-0.19,3.707-0.027,4.654,0.269 c1.752,0.494,1.531-0.053,4.084,0.164c2.26-0.4,2.154,2.391-1.496,3.68c-2.549,1.405-3.107,1.475-2.293,2.984 c3.484,7.906,2.865,13.183,2.193,16.466c2.41,0.271,5.732-0.62,7.301,0.725c0.506,0.333,0.648,1.866-0.457,2.86 c-4.105,2.745-9.283,7.022-13.904,7.662c-0.977-0.194,0.156-2.025,0.803-2.247l1.898-0.03c0.596-0.101,0.936-0.669,1.152-1.139 c3.16-0.404,5.045-3.775,8.246-4.818c-4.035-0.718-9.588,3.981-12.162,1.051c-5.043,1.423-11.449,1.84-15.895,1.111 c-3.105,2.687-7.934,4.021-12.115,5.866c-3.271,3.511-5.188,8.086-9.967,10.414c-0.986,0.119-0.48-1.974,0.066-2.385l1.795-0.618 C-22.995,25.682-22.849,25.035-22.788,24.521z',
+                };  
+                const labelSetting = {  
+                    show: true,
+                    position: 'right',
+                    offset: [-10, 20],
+                    fontSize: 12 
+                };  
+
+                function makeOption(type, symbol) {  
+                    return {
+                        title: {
+                            text: '销售',
+                            left: '20px',
+                            textStyle: {
+                                color: 'black'
+                            }
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        grid: {
+                            containLabel: true,
+                            left: 20,
+                            top: 40,
+                            bottom:30
+                        },
+                        yAxis: {
+                            data: ['月销售额', '日销售额', '日均销售额'],
+                            inverse: true,
+                            axisLine: { show: false },
+                            axisTick: { show: false },
+                            axisLabel: {
+                                margin: 30,
+                                fontSize: 14,
+                                color: 'black'
+                            },
+                            axisPointer: {
+                                label: {
+                                    show: true,
+                                    margin: 30
+                                }
+                            }
+                        },
+                        xAxis: {
+                            splitLine: { show: false },
+                            axisLabel: { show: false },
+                            axisTick: { show: false },
+                            axisLine: { show: false }
+                        },
+                        animationDurationUpdate: 500,
+                        series: [
+                            {
+                                id: 'bar1',
+                                type: type,
+                                label: labelSetting,
+                                symbolRepeat: true,
+                                symbolSize: ['150%', '100%'],
+                                barCategoryGap: '20%',
+                                universalTransition: {
+                                    enabled: true,
+                                    delay: function (idx, total) {
+                                        return (idx / total) * 1000;
+                                    }
+                                },
+                                data: [
+                                    {
+                                        value: 3569476.75,
+                                        symbol: symbol || pathSymbols.reindeer,
+                                        label: {
+                                            position: 'right',
+                                            offset: [-25, 0],
+                                            formatter: function (params) {  
+                                                if (params.value === 0) {  
+                                                    return '';  
+                                                }  
+                                                return params.value;  
+                                            }  
+                                        }
+                                    },
+                                    {
+                                        value: 199316.5,
+                                        symbol: symbol || pathSymbols.reindeer,
+                                        label: {
+                                            position: 'right',
+                                            offset: [10, 0],
+                                            formatter: function (params) {  
+                                                if (params.value === 0) {  
+                                                    return '';  
+                                                }  
+                                                return params.value;  
+                                            }  
+                                        }
+                                    },
+                                    {
+                                        value: 9316.5,
+                                        symbol: symbol || pathSymbols.reindeer,
+                                        label: {
+                                            position: 'right',
+                                            offset: [10, 0],
+                                            formatter: function (params) {  
+                                                if (params.value === 0) {  
+                                                    return '';  
+                                                }  
+                                                return params.value;  
+                                            }  
+                                        }
+                                    },
+                                ]
+                            },
+                        ]
+                    };
+                }  
+                
+                const options = [  
+                    makeOption('pictorialBar'),  
+                    makeOption('bar'),  
+                    makeOption('pictorialBar', 'diamond')  
+                ];  
+                
+                var optionIndex = 0;  
+                
+                var option = options[optionIndex];  
+                myChart.setOption(option);  
+                
+                setInterval(function () {  
+                    optionIndex = (optionIndex + 1) % options.length;  
+                    myChart.setOption(options[optionIndex]);  
+                }, 2500);  
+                option && myChart.setOption(option);
+            },
+            drawRightBottom() {
+                const pathSymbols = {
+                    rocket: 'path://M-244.396,44.399c0,0,0.47-2.931-2.427-6.512c2.819-8.221,3.21-15.709,3.21-15.709s5.795,1.383,5.795,7.325C-237.818,39.679-244.396,44.399-244.396,44.399z M-260.371,40.827c0,0-3.881-12.946-3.881-18.319c0-2.416,0.262-4.566,0.669-6.517h17.684c0.411,1.952,0.675,4.104,0.675,6.519c0,5.291-3.87,18.317-3.87,18.317H-260.371z M-254.745,18.951c-1.99,0-3.603,1.676-3.603,3.744c0,2.068,1.612,3.744,3.603,3.744c1.988,0,3.602-1.676,3.602-3.744S-252.757,18.951-254.745,18.951z M-255.521,2.228v-5.098h1.402v4.969c1.603,1.213,5.941,5.069,7.901,12.5h-17.05C-261.373,7.373-257.245,3.558-255.521,2.228zM-265.07,44.399c0,0-6.577-4.721-6.577-14.896c0-5.942,5.794-7.325,5.794-7.325s0.393,7.488,3.211,15.708C-265.539,41.469-265.07,44.399-265.07,44.399z M-252.36,45.15l-1.176-1.22L-254.789,48l-1.487-4.069l-1.019,2.116l-1.488-3.826h8.067L-252.36,45.15z',
+                };
+                var myChart = echarts.init(this.$refs.fourMain3);
+                var option = {
+                    title: {
+                        text: '平台近五日走势',
+                        textStyle: {
+                            color: 'black'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'none'
+                        },
+                        formatter: function (params) {
+                            return params[0].name + ': ' + params[0].value;
+                        }
+                    },
+                    xAxis: {
+                        data: [], // Placeholder for xAxis data
+                        axisTick: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: {
+                            color: 'black'
+                        }
+                    },
+                    yAxis: {
+                        splitLine: { show: false },
+                        axisTick: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: { show: false }
+                    },
+                    color: ['#5470C6'],
+                    series: [
+                        {
+                            name: 'hill',
+                            type: 'pictorialBar',
+                            barCategoryGap: '-130%',
+                            // symbol: 'path://M0,10 L10,10 L5,0 L0,10 z',
+                            symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
+                            itemStyle: {
+                                opacity: 0.5
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    opacity: 1
+                                }
+                            },
+                            data: [120147.71, 148835.37, 153576.32, 153576.32, 153576.32], // Example data
+                            z: 10
+                        },
+                        {
+                            name: 'glyph',
+                            type: 'pictorialBar',
+                            barGap: '-100%',
+                            symbolPosition: 'end',
+                            symbolSize: 50,
+                            symbolOffset: [0, '-120%'],
+                            label: {
+                                show: true,
+                                color: 'black'
+                            },
+                            data: [
+                                { value: 120147.71, symbol: pathSymbols.rocket, symbolSize: [60, 60] },
+                                { value: 148835.37, symbol: pathSymbols.rocket, symbolSize: [50, 60] },
+                                { value: 153576.32, symbol: pathSymbols.rocket, symbolSize: [65, 35] },
+                                { value: 153576.32, symbol: pathSymbols.rocket, symbolSize: [65, 35] },
+                                { value: 153576.32, symbol: pathSymbols.rocket, symbolSize: [65, 35] }
+                            ]
+                        }
+                    ]
+                };
+                option.xAxis.data = this.getPreviousFiveDays();
+                myChart.setOption(option);
+            },
+            getPreviousFiveDays() {
+                const today = new Date();
+                const days = [];
+                for (let i = 1; i <= 5; i++) {
+                    const day = new Date(today);
+                    day.setDate(today.getDate() - i);
+                    const formattedDate = new Intl.DateTimeFormat('zh-CN', { month: '2-digit', day: '2-digit' }).format(day);
+                    days.push(formattedDate);
+                }
+                return days.reverse();
+            }
+        }
+    });
+    function showContent(id) {
+                // Hide all content divs
+                var contents = document.querySelectorAll('.content > div');
+                contents.forEach(function(content) {
+                    content.classList.remove('active');
+                });
+                // Show the selected content div
+                var selectedContent = document.getElementById(id);
+                if (selectedContent) {
+                    selectedContent.classList.add('active');
+                }
+            }
+    </script>
+</body>
+</html>

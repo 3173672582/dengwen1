@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>采购数据表</title>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .edit {
+            background-color: #ffc107;
+        }
+        .delete {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>平台数据表</h1>
+    <button class="button" onclick="addRow()">添加行</button>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>美团</th>
+                <th>黔兑</th>
+                <th>三鹏</th>
+                <th>黔小象</th>
+                <th>多多买菜</th>
+                <th>快驴</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- 初始行将由 JavaScript 填充 -->
+        </tbody>
+    </table>
+
+    <!-- jQuery 和 DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable(); // 初始化 DataTables
+            fillCurrentMonthDates(); // 填充当前月份的日期
+        });
+
+        function fillCurrentMonthDates() {
+            const tbody = document.getElementById("table-body");
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = date.getMonth(); // 0 = January, 11 = December
+            const lastDay = new Date(year, month + 1, 0).getDate();
+
+            for (let day = 1; day <= lastDay; day++) {
+                const row = tbody.insertRow();
+                row.insertCell(0).innerText = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                for (let i = 1; i <= 6; i++) {
+                    const salesCell = row.insertCell(i);
+                    salesCell.contentEditable = "true";
+                    salesCell.innerText = '0'; // 默认值为 0
+                }
+
+                const actionCell = row.insertCell(7);
+                actionCell.innerHTML = `<button class="edit" onclick="saveRow(this)">保存</button> <button class="delete" onclick="deleteRow(this)">删除</button>`;
+            }
+        }
+
+        function addRow() {
+            const tbody = document.getElementById("table-body");
+            const newRow = tbody.insertRow();
+            for (let i = 0; i < 7; i++) {
+                const newCell = newRow.insertCell(i);
+                newCell.contentEditable = "true";
+                newCell.innerText = '0'; // 默认值为 0
+            }
+            const actionCell = newRow.insertCell(7);
+            actionCell.innerHTML = `<button class="edit" onclick="saveRow(this)">保存</button> <button class="delete" onclick="deleteRow(this)">删除</button>`;
+            $('#data-table').DataTable().row.add(newRow).draw(); // 更新 DataTable
+        }
+
+        function saveRow(button) {
+            const row = button.parentNode.parentNode;
+            for (let i = 0; i < row.cells.length - 1; i++) {
+                row.cells[i].contentEditable = "false"; // 设置为只读
+            }
+            button.innerText = "已保存";
+            button.setAttribute("disabled", "true");
+
+            // 计算美团
+            const qd = parseFloat(row.cells[2].innerText) || 0; // 黔兑
+            const sp = parseFloat(row.cells[3].innerText) || 0; // 三鹏
+            const qxx = parseFloat(row.cells[4].innerText) || 0; // 黔小象
+            const meituanTotal = qd + sp + qxx; // 美团总和
+            row.cells[1].innerText = meituanTotal.toFixed(2); // 更新美团列，保留两位小数
+        }
+
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            $('#data-table').DataTable().row($(row)).remove().draw(); // 更新 DataTable
+        }
+    </script>
+</body>
+</html>

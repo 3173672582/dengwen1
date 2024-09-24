@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基本界面</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Adjusting height to fill the viewport */
+        }
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            color: white;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+            border-bottom: 1px solid #444;
+        }
+        .sidebar a:hover {
+            background-color: #555;
+        }
+        .dropdown {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+        }
+        .dropdown a {
+            padding-left: 30px; /* Indent for dropdown items */
+        }
+        .dropdown-toggle {
+            cursor: pointer; /* Pointer cursor for dropdown toggle */
+        }
+        .content {
+            flex: 1; /* Allow the content to take the remaining space */
+            display: flex; /* Flex display for the iframe */
+        }
+        iframe {
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            border: none; /* Remove border */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 主体内容 -->
+    <div class="container">
+        <div class="main-content">
+            <!-- 左侧菜单栏 -->
+            <div class="sidebar">
+                <div class="dropdown-toggle" onclick="toggleDropdown('xb-dropdown')">
+                    <a href="#">小B端</a>
+                </div>
+                <div id="xb-dropdown" class="dropdown">
+                    <a href="#" onclick="loadPage('xb1.html')">贵阳</a>
+                    <a href="#" onclick="loadPage('xb2.html')">六盘水</a>
+                    <a href="#" onclick="loadPage('xb3.html')">安顺</a>
+                    <a href="#" onclick="loadPage('xb4.html')">铜仁</a>
+                    <a href="#" onclick="loadPage('xb5.html')">遵义</a>
+                </div>
+                <a href="#" onclick="loadPage('cg.html')">采购</a>
+                <a href="#" onclick="loadPage('xs.html')">销售</a>
+                <a href="#" onclick="loadPage('pt.html')">平台业务</a>
+                <a href="#" onclick="loadPage('xb.html')">汇总</a>
+            </div>
+
+            <!-- 右侧内容区域 -->
+            <div class="content">
+                <iframe id="content-frame" src="xb1.html" frameborder="0"></iframe> <!-- Automatically load 小B端 page -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadPage(page) {
+            const frame = document.getElementById('content-frame');
+            frame.src = page; // Set the source of the iframe to the selected page
+        }
+
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex'; // Toggle dropdown visibility
+        }
+    </script>
+</body>
+</html>
